@@ -1,0 +1,51 @@
+[build-system]
+requires=["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyKorg"
+version = "0.1.0"
+description = "fast 1D LTE stellar spectral synthesis"
+authors = [
+  {name = "Adam Wheeler", email = "adamwhlr@gmail.com"},
+  {name = "Matthew Abruzzo", email = "matthewabruzzo@gmail.com" },
+]
+# I need to revisit the following
+dependencies = [
+  'numpy',
+  'juliacall'
+]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Unix",
+    "Natural Language :: English",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.license]
+text = "BSD 3-Clause"
+
+[project.urls]
+Homepage = 'https://github.com/ajwheeler/pykorg'
+Source = 'https://github.com/ajwheeler/pykorg'
+Tracker = 'https://github.com/ajwheeler/pykorg/issues'
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pyKorg"]
