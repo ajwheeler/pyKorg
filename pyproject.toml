@@ -1,9 +1,15 @@
 [build-system]
-requires=["setuptools>=61.0.0"]
-build-backend = "setuptools.build_meta"
+# here we specify the build-backend. For context:
+# - tools like pip and uv are example of build-frontends. Users directly
+#   interact with the frontend
+# - tools like setuptools, hatchling, scikit-build-core, meson-python are all
+#   examples of build backends
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "pyKorg"
+requires-python = ">=3.10"
 version = "0.1.0"
 description = "fast 1D LTE stellar spectral synthesis"
 authors = [
@@ -46,6 +52,32 @@ Homepage = 'https://github.com/ajwheeler/pykorg'
 Source = 'https://github.com/ajwheeler/pykorg'
 Tracker = 'https://github.com/ajwheeler/pykorg/issues'
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["pyKorg"]
+[dependency-groups]
+# these are development dependencies. They can be installed with pip (v25.1+)
+# by invoking `pip install --user --group {name}` from the directory holding this
+# configuration file
+docs = ['sphinx', 'furo']
+typecheck = ["mypy==1.15.0"]
+dev = ["pytest"]
+
+# configure pytest
+[tool.pytest.ini_options]
+# settings inspired by: learn.scientific-python.org/development/guides/pytest/
+#  -ra: The -r tells pytest to report extra test summary info on the events
+#       corresponding to all characters following the r. Here, the "a"
+#       corresponds to "all" events (other than passing tests)
+#  --showlocals: directs pytest to show local variables in tracebacks
+#  --strict-markers: ensures we don't try to use an unspecified fixture
+#  --string-config: all configuration mistakes are reported as errors
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+# by default, we treat any test marked xfail that doesn't fail as an error
+# (we can override this locally, if necessary)
+xfail_strict = true
+# limit the directories searched by pytests for the test files
+testpaths = [
+  "tests",
+]
+
+[[tool.mypy.overrides]]
+module = ["juliacall.*"]
+ignore_missing_imports = true

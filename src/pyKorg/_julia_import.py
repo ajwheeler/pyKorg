@@ -1,3 +1,7 @@
+"""
+This module initializes juliacall and imports Korg if these tasks aren't already done
+"""
+
 import os
 import sys
 import warnings
