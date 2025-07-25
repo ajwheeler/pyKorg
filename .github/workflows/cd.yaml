@@ -63,7 +63,7 @@ jobs:
 
   upload_all:
     name: Publish to PyPI
-    needs: [build_wheels, make_sdist]
+    needs: make_sdist_and_wheel
     environment: pypi
     permissions:
       id-token: write
