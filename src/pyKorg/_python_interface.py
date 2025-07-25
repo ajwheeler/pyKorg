@@ -4,7 +4,7 @@ This module defines the python interface to Korg
 
 import os
 from collections.abc import Callable, Mapping
-from typing import TypeVar, ParamSpec
+from typing import Any, TypeVar, ParamSpec
 from ._julia_import import jl, Korg
 
 from juliacall import VectorValue as jlVectorValue
@@ -99,11 +99,11 @@ def read_linelist(
     isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None,
 ) -> LineList:
     # coerce fname to a string
-    fname = os.fsdecode(fname)
+    coerced_fname = os.fsdecode(fname)
 
     # build up kwargs (we have to play some games here since we can't natively
     # represent the default values in python)
-    kwargs = {}
+    kwargs: dict[str, Any] = {}
     if format is not None:
         kwargs["format"] = format
     if isotopic_abundances is not None:
