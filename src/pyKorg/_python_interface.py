@@ -9,8 +9,9 @@ from ._julia_import import jl, Korg
 from juliacall import VectorValue as jlVectorValue
 
 # this is for typing purposes (they aren't necessary starting in python 3.12)
-T = TypeVar('T')
-P = ParamSpec('P')
+T = TypeVar("T")
+P = ParamSpec("P")
+
 
 def _perfect_jl_shadowing(fn: Callable[P, T]) -> Callable[P, T]:
     """A decorator for functions that perfectly shadows a Korg

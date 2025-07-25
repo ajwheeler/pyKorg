@@ -1,0 +1,62 @@
+# inspired by
+# - https://learn.scientific-python.org/development/guides/gha-wheels/
+# - https://learn.scientific-python.org/development/guides/gha-pure/
+
+name: cd
+
+# builds and deploys sdists and wheels
+
+on:
+  pull_request:
+  push:
+    branches:
+    - main
+    tags:
+    - v[0-9].*
+  schedule:
+  #        ┌───────────── minute (0 - 59)
+  #        │  ┌───────────── hour (0 - 23)
+  #        │  │  ┌───────────── day of the month (1 - 31)
+  #        │  │  │ ┌───────────── month (1 - 12 or JAN-DEC)
+  #        │  │  │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+  #        │  │  │ │ │
+  - cron: 46 07 * * MON
+  workflow_dispatch:
+
+jobs:
+  make_sdist_and_wheel:
+    name: Make SDist And Wheel
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+    - name: Build SDist and Wheel
+      run: pipx run build
+
+    - name: Check README rendering for PyPI
+      run: pipx run twine check dist/*
+
+    - name: Test SDist
+      run: |
+        python -m venv my-sdist-venv
+        source my-sdist-venv/bin/activate
+        pip install --upgrade pip
+        python -m pip install --group dev "$(echo dist/*.tar.gz)"
+        pytest
+
+    - name: Test Wheel
+      run: |
+        python -m venv my-wheel-venv
+        source my-wheel-venv/bin/activate
+        pip install --upgrade pip
+        python -m pip install --group dev "$(echo dist/*.whl)"
+        pytest
+
+    # upload artifacts to GitHub
+    - uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/*

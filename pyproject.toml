@@ -4,17 +4,26 @@
 #   interact with the frontend
 # - tools like setuptools, hatchling, scikit-build-core, meson-python are all
 #   examples of build backends
-requires = ["hatchling"]
+requires = [
+    # the version bound follows modern conventions for license & license-files
+    "hatchling>=1.26",
+    # a plugin that infers the version number from git tags
+    "hatch-vcs"
+]
 build-backend = "hatchling.build"
 
 [project]
 name = "pyKorg"
-requires-python = ">=3.10"
-version = "0.1.0"
+requires-python = ">=3.11"
+dynamic = ["version"]  # jump down to [tool.hatch] for more info
+license = "BSD-3-Clause"
+license-files = [
+    "LICENSE"
+]
 description = "fast 1D LTE stellar spectral synthesis"
 authors = [
   {name = "Adam Wheeler", email = "adamwhlr@gmail.com"},
-  {name = "Matthew Abruzzo", email = "matthewabruzzo@gmail.com" },
+  {name = "Matthew W. Abruzzo", email = "matthewabruzzo@gmail.com" },
 ]
 # I need to revisit the following
 dependencies = [
@@ -24,7 +33,6 @@ dependencies = [
 classifiers = [
     "Environment :: Console",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: POSIX :: Linux",
     "Operating System :: Unix",
@@ -32,10 +40,9 @@ classifiers = [
     "Programming Language :: C++",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Astronomy",
     "Topic :: Scientific/Engineering :: Physics",
 ]
@@ -43,9 +50,6 @@ classifiers = [
 [project.readme]
 file = "README.md"
 content-type = "text/markdown"
-
-[project.license]
-text = "BSD 3-Clause"
 
 [project.urls]
 Homepage = 'https://github.com/ajwheeler/pykorg'
@@ -59,6 +63,39 @@ Tracker = 'https://github.com/ajwheeler/pykorg/issues'
 docs = ['sphinx', 'furo']
 typecheck = ["mypy==1.15.0"]
 dev = ["pytest"]
+
+# hatch-specific instructions
+[tool.hatch]
+version.source = "vcs"
+# the build-system automatically generates a file with the following name
+# that includes the version
+build.hooks.vcs.version-file = "src/pyKorg/_version.py"
+
+[tool.hatch.build.targets.sdist]
+# explicitly include the _version.py file in a sdist. It is dynamically created
+# by hooks during the build-process. (We need to explicitly include it since its
+# in our .gitignore file, which hatch uses for determining sdist contents)
+artifacts = ["src/pyKorg/_version.py"]
+# the following files/directories really aren't needed in a wheel
+exclude = [".github/**", ".pre-commit-config.yaml"]
+
+[tool.hatch.build.targets.wheel]
+# explicitly include the _version.py file in a wheel. It is dynamically created
+# by hooks during the build-process. (We need to explicitly include it since its
+# in our .gitignore file, which hatch uses for determining sdist contents)
+artifacts = ["src/pyKorg/_version.py"]
+# the following files/directories really aren't needed in a wheel
+exclude = [
+    # unneeded directories:
+    "docs/**",
+    "tests/**",
+    ".git/**",
+    ".github/**",
+    # unneeded files:
+    ".git_archival.txt",
+    ".gitattributes",
+    ".pre-commit-config.yaml"
+]
 
 # configure pytest
 [tool.pytest.ini_options]
