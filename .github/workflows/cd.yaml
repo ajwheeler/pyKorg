@@ -64,7 +64,7 @@ jobs:
   upload_all:
     name: Publish to PyPI
     needs: [build_wheels, make_sdist]
-    environment: pypi # CHANGEME to pypi (to start uploading to PyPI)
+    environment: pypi
     permissions:
       id-token: write
       attestations: write
