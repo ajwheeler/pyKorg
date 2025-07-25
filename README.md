@@ -1,4 +1,4 @@
-# pyKorg: WORK IN PROGRESS
+# korg.py: WORK IN PROGRESS
 
-`pyKorg` is a python package for performing fast 1D LTE stellar spectral synthesis.
+`korg` is a python package for performing fast 1D LTE stellar spectral synthesis.
 Under the hood, it uses the [Korg.jl](https://github.com/ajwheeler/Korg.jl) julia package.

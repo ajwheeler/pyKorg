@@ -49,7 +49,7 @@ jobs:
         # install the package itself
         pip install .
     - name: Run mypy
-      run: mypy -p pyKorg
+      run: mypy -p korg
 
   # I think we should probably be using ReadTheDocs, which can let us test-render the
   # documentation on each PR (and eliminate this job)

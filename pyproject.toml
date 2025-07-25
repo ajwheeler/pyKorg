@@ -13,7 +13,7 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "pyKorg"
+name = "korg"
 requires-python = ">=3.11"
 dynamic = ["version"]  # jump down to [tool.hatch] for more info
 license = "BSD-3-Clause"
@@ -69,13 +69,13 @@ dev = ["pytest"]
 version.source = "vcs"
 # the build-system automatically generates a file with the following name
 # that includes the version
-build.hooks.vcs.version-file = "src/pyKorg/_version.py"
+build.hooks.vcs.version-file = "src/korg/_version.py"
 
 [tool.hatch.build.targets.sdist]
 # explicitly include the _version.py file in a sdist. It is dynamically created
 # by hooks during the build-process. (We need to explicitly include it since its
 # in our .gitignore file, which hatch uses for determining sdist contents)
-artifacts = ["src/pyKorg/_version.py"]
+artifacts = ["src/korg/_version.py"]
 # the following files/directories really aren't needed in a wheel
 exclude = [".github/**", ".pre-commit-config.yaml"]
 
@@ -83,7 +83,7 @@ exclude = [".github/**", ".pre-commit-config.yaml"]
 # explicitly include the _version.py file in a wheel. It is dynamically created
 # by hooks during the build-process. (We need to explicitly include it since its
 # in our .gitignore file, which hatch uses for determining sdist contents)
-artifacts = ["src/pyKorg/_version.py"]
+artifacts = ["src/korg/_version.py"]
 # the following files/directories really aren't needed in a wheel
 exclude = [
     # unneeded directories:

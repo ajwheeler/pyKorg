@@ -52,8 +52,8 @@ class LineList:
     """A lightweight class that wraps a line list.
 
     You shouldn't try to initialize this class directly. Instead, you should rely upon
-    functions like :py:func:`~pyKorg.get_APOGEE_DR17_linelist`,
-    :py:func:`~pyKorg.get_GES_linelist`, etc.
+    functions like :py:func:`~korg.get_APOGEE_DR17_linelist`,
+    :py:func:`~korg.get_GES_linelist`, etc.
     """
 
     _lines: jlVectorValue
@@ -108,4 +108,4 @@ def read_linelist(
         kwargs["format"] = format
     if isotopic_abundances is not None:
         kwargs["isotopic_abundances"] = isotopic_abundances
-    return LineList(Korg.read_linelist(fname, **kwargs))
+    return LineList(Korg.read_linelist(coerced_fname, **kwargs))

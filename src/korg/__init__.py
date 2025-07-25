@@ -18,4 +18,4 @@ __all__ = [
     "get_VALD_solar_linelist",
 ]
 
-warnings.warn("pyKorg is highly experimental. All functions/types can and will change")
+warnings.warn("korg.py is highly experimental. All functions/types can and will change")

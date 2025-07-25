@@ -2,6 +2,6 @@
 
 
 def test_import():
-    import pyKorg
+    import korg
 
-    pyKorg.get_APOGEE_DR17_linelist()
+    korg.get_APOGEE_DR17_linelist()
