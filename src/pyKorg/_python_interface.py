@@ -1,8 +1,8 @@
 """
 This module defines the python interface to Korg
 """
-
-from collections.abc import Callable
+import os
+from collections.abc import Callable, Mapping
 from typing import TypeVar, ParamSpec
 from ._julia_import import jl, Korg
 
@@ -87,3 +87,27 @@ def get_GES_linelist(*, include_molecules: bool = True) -> LineList:
 @_perfect_jl_shadowing
 def get_VALD_solar_linelist() -> LineList:
     return LineList(Korg.get_VALD_solar_linelist())
+
+
+# we can't currently reuse the exact Julia signature since the Julia signature
+# explicitly states that it returns a vector of lines
+def read_linelist(
+    fname: os.PathLike,
+    *,
+    format: str | None = None,
+    isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None
+) -> LineList:
+
+    # coerce fname to a string
+    fname = os.fsdecode(fname)
+
+    # build up kwargs (we have to play some games here since we can't natively
+    # represent the default values in python)
+    kwargs = {}
+    if format is not None:
+        kwargs["format"] = format
+    if isotopic_abundances is not None:
+        kwargs["isotopic_abundances"] = isotopic_abundances
+    return LineList(Korg.read_linelist(fname, **kwargs))
+
+
