@@ -1,0 +1,70 @@
+name: ci
+
+
+on:
+  pull_request:
+  schedule:
+  - cron: 37 07 * * 1      # run every Monday at 07:37UTC. Crontab computed with crontab.guru
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13', 3.14-dev]  # 3.13t breaks!
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        # upgrade pip
+        python -m pip install --upgrade pip
+        # install the dev-dependencies (for testing)
+        pip install --group dev
+        # install the package itself
+        pip install .
+    - name: Test with pytest
+      run: pytest
+
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: |
+        # upgrade pip
+        python -m pip install --upgrade pip
+        # install the dev-dependencies (for testing)
+        pip install --group typecheck
+        # install the package itself
+        pip install .
+    - name: Run mypy
+      run: mypy -p pyKorg
+
+  # I think we should probably be using ReadTheDocs, which can let us test-render the
+  # documentation on each PR (and eliminate this job)
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip  # upgrade pip
+        pip install --group docs  # install doc dependencies
+        pip install . # install with package to use with autodocs
+    - name: Test the docs build
+      run: python -m sphinx -M html "./docs" "./docs/_build" -W

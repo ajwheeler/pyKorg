@@ -1,14 +1,29 @@
 [build-system]
-requires=["setuptools>=61.0.0"]
-build-backend = "setuptools.build_meta"
+# here we specify the build-backend. For context:
+# - tools like pip and uv are example of build-frontends. Users directly
+#   interact with the frontend
+# - tools like setuptools, hatchling, scikit-build-core, meson-python are all
+#   examples of build backends
+requires = [
+    # the version bound follows modern conventions for license & license-files
+    "hatchling>=1.26",
+    # a plugin that infers the version number from git tags
+    "hatch-vcs"
+]
+build-backend = "hatchling.build"
 
 [project]
 name = "pyKorg"
-version = "0.1.0"
+requires-python = ">=3.11"
+dynamic = ["version"]  # jump down to [tool.hatch] for more info
+license = "BSD-3-Clause"
+license-files = [
+    "LICENSE"
+]
 description = "fast 1D LTE stellar spectral synthesis"
 authors = [
   {name = "Adam Wheeler", email = "adamwhlr@gmail.com"},
-  {name = "Matthew Abruzzo", email = "matthewabruzzo@gmail.com" },
+  {name = "Matthew W. Abruzzo", email = "matthewabruzzo@gmail.com" },
 ]
 # I need to revisit the following
 dependencies = [
@@ -18,7 +33,6 @@ dependencies = [
 classifiers = [
     "Environment :: Console",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: POSIX :: Linux",
     "Operating System :: Unix",
@@ -26,10 +40,9 @@ classifiers = [
     "Programming Language :: C++",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Astronomy",
     "Topic :: Scientific/Engineering :: Physics",
 ]
@@ -38,14 +51,70 @@ classifiers = [
 file = "README.md"
 content-type = "text/markdown"
 
-[project.license]
-text = "BSD 3-Clause"
-
 [project.urls]
 Homepage = 'https://github.com/ajwheeler/pykorg'
 Source = 'https://github.com/ajwheeler/pykorg'
 Tracker = 'https://github.com/ajwheeler/pykorg/issues'
 
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["pyKorg"]
+[dependency-groups]
+# these are development dependencies. They can be installed with pip (v25.1+)
+# by invoking `pip install --user --group {name}` from the directory holding this
+# configuration file
+docs = ['sphinx', 'furo']
+typecheck = ["mypy==1.15.0"]
+dev = ["pytest"]
+
+# hatch-specific instructions
+[tool.hatch]
+version.source = "vcs"
+# the build-system automatically generates a file with the following name
+# that includes the version
+build.hooks.vcs.version-file = "src/pyKorg/_version.py"
+
+[tool.hatch.build.targets.sdist]
+# explicitly include the _version.py file in a sdist. It is dynamically created
+# by hooks during the build-process. (We need to explicitly include it since its
+# in our .gitignore file, which hatch uses for determining sdist contents)
+artifacts = ["src/pyKorg/_version.py"]
+# the following files/directories really aren't needed in a wheel
+exclude = [".github/**", ".pre-commit-config.yaml"]
+
+[tool.hatch.build.targets.wheel]
+# explicitly include the _version.py file in a wheel. It is dynamically created
+# by hooks during the build-process. (We need to explicitly include it since its
+# in our .gitignore file, which hatch uses for determining sdist contents)
+artifacts = ["src/pyKorg/_version.py"]
+# the following files/directories really aren't needed in a wheel
+exclude = [
+    # unneeded directories:
+    "docs/**",
+    "tests/**",
+    ".git/**",
+    ".github/**",
+    # unneeded files:
+    ".git_archival.txt",
+    ".gitattributes",
+    ".pre-commit-config.yaml"
+]
+
+# configure pytest
+[tool.pytest.ini_options]
+# settings inspired by: learn.scientific-python.org/development/guides/pytest/
+#  -ra: The -r tells pytest to report extra test summary info on the events
+#       corresponding to all characters following the r. Here, the "a"
+#       corresponds to "all" events (other than passing tests)
+#  --showlocals: directs pytest to show local variables in tracebacks
+#  --strict-markers: ensures we don't try to use an unspecified fixture
+#  --string-config: all configuration mistakes are reported as errors
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+# by default, we treat any test marked xfail that doesn't fail as an error
+# (we can override this locally, if necessary)
+xfail_strict = true
+# limit the directories searched by pytests for the test files
+testpaths = [
+  "tests",
+]
+
+[[tool.mypy.overrides]]
+module = ["juliacall.*"]
+ignore_missing_imports = true

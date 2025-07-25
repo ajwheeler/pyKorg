@@ -1,0 +1,53 @@
+# this is auto-generated as part of the build
+_version.py
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# sphinx
+_build
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# UV
+#   This is commonly ignored for libraries.
+uv.lock
+
+# Environments
+.env
+.envrc
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+
+# Ruff stuff:
+.ruff_cache/
