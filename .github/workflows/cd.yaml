@@ -60,3 +60,29 @@ jobs:
       with:
         name: dist
         path: dist/*
+
+  upload_all:
+    name: Publish to PyPI
+    needs: [build_wheels, make_sdist]
+    environment: pypi # CHANGEME to pypi (to start uploading to PyPI)
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+
+    runs-on: ubuntu-latest
+    # upload to PyPI on every tag starting with 'grackle-'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: dist*
+        path: dist
+
+    - name: Generate artifact attestations
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-path: dist/*
+
+    - name: Publish to pypi
+      uses: pypa/gh-action-pypi-publish@release/v1

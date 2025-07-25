@@ -1,6 +1,7 @@
 """
 This module defines the python interface to Korg
 """
+
 import os
 from collections.abc import Callable, Mapping
 from typing import TypeVar, ParamSpec
@@ -95,9 +96,8 @@ def read_linelist(
     fname: os.PathLike,
     *,
     format: str | None = None,
-    isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None
+    isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None,
 ) -> LineList:
-
     # coerce fname to a string
     fname = os.fsdecode(fname)
 
@@ -109,5 +109,3 @@ def read_linelist(
     if isotopic_abundances is not None:
         kwargs["isotopic_abundances"] = isotopic_abundances
     return LineList(Korg.read_linelist(fname, **kwargs))
-
-
