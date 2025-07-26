@@ -48,7 +48,7 @@ def _recycle_jl_docstring(fn: Callable):
         )
 
 
-class LineList:
+class Linelist:
     """A lightweight class that wraps a line list.
 
     You shouldn't try to initialize this class directly. Instead, you should rely upon
@@ -71,23 +71,23 @@ class LineList:
 
 
 @_perfect_jl_shadowing
-def get_APOGEE_DR17_linelist(*, include_water: bool = True) -> LineList:
-    return LineList(Korg.get_APOGEE_DR17_linelist(include_water=include_water))
+def get_APOGEE_DR17_linelist(*, include_water: bool = True) -> Linelist:
+    return Linelist(Korg.get_APOGEE_DR17_linelist(include_water=include_water))
 
 
 @_perfect_jl_shadowing
-def get_GALAH_DR3_linelist() -> LineList:
-    return LineList(Korg.get_GALAH_DR3_linelist())
+def get_GALAH_DR3_linelist() -> Linelist:
+    return Linelist(Korg.get_GALAH_DR3_linelist())
 
 
 @_perfect_jl_shadowing
-def get_GES_linelist(*, include_molecules: bool = True) -> LineList:
-    return LineList(Korg.get_GES_linelist(include_molecules=include_molecules))
+def get_GES_linelist(*, include_molecules: bool = True) -> Linelist:
+    return Linelist(Korg.get_GES_linelist(include_molecules=include_molecules))
 
 
 @_perfect_jl_shadowing
-def get_VALD_solar_linelist() -> LineList:
-    return LineList(Korg.get_VALD_solar_linelist())
+def get_VALD_solar_linelist() -> Linelist:
+    return Linelist(Korg.get_VALD_solar_linelist())
 
 
 # we can't currently reuse the exact Julia signature since the Julia signature
@@ -97,7 +97,7 @@ def read_linelist(
     *,
     format: str | None = None,
     isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None,
-) -> LineList:
+) -> Linelist:
     # coerce fname to a string
     coerced_fname = os.fsdecode(fname)
 
@@ -108,4 +108,4 @@ def read_linelist(
         kwargs["format"] = format
     if isotopic_abundances is not None:
         kwargs["isotopic_abundances"] = isotopic_abundances
-    return LineList(Korg.read_linelist(coerced_fname, **kwargs))
+    return Linelist(Korg.read_linelist(coerced_fname, **kwargs))
