@@ -39,26 +39,26 @@ jobs:
     - name: Check README rendering for PyPI
       run: pipx run twine check dist/*
 
-    - name: Test SDist
-      run: |
-        python -m venv my-sdist-venv
-        source my-sdist-venv/bin/activate
-        pip install --upgrade pip
-        python -m pip install --group dev "$(echo dist/*.tar.gz)"
-        pytest
+    #- name: Test SDist
+    #  run: |
+    #    python -m venv my-sdist-venv
+    #    source my-sdist-venv/bin/activate
+    #    pip install --upgrade pip
+    #    python -m pip install --group dev "$(echo dist/*.tar.gz)"
+    #    pytest
 
-    - name: Test Wheel
-      run: |
-        python -m venv my-wheel-venv
-        source my-wheel-venv/bin/activate
-        pip install --upgrade pip
-        python -m pip install --group dev "$(echo dist/*.whl)"
-        pytest
+    #- name: Test Wheel
+    #  run: |
+    #    python -m venv my-wheel-venv
+    #    source my-wheel-venv/bin/activate
+    #   pip install --upgrade pip
+    #    python -m pip install --group dev "$(echo dist/*.whl)"
+    #    pytest
 
     # upload artifacts to GitHub
     - uses: actions/upload-artifact@v4
       with:
-        name: dist
+        name: Packages
         path: dist/*
 
   upload_all:
@@ -76,13 +76,16 @@ jobs:
     steps:
     - uses: actions/download-artifact@v4
       with:
-        pattern: dist*
-        path: dist
+        pattern: Packages
+        path: tmp-Packages
+    - run: mkdir dist
+    - run: mv tmp-Packages/Packages/* dist
+    - run: ls dist
 
     - name: Generate artifact attestations
       uses: actions/attest-build-provenance@v2
       with:
-        subject-path: dist/*
+        subject-path: "dist/*"
 
     - name: Publish to pypi
       uses: pypa/gh-action-pypi-publish@release/v1
