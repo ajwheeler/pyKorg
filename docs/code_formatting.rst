@@ -3,7 +3,7 @@
 Style Formatting
 ================
 
-The pyKorg repository is configured with tools to enforce checks on the various files in the repository.
+The korg.py repository is configured with tools to enforce checks on the various files in the repository.
 The primary checks apply the Ruff formatter and Ruff linter to the python files.
 
 Because we realize that these tools may seem overwhelming or complicated, we have configured the repository to try to simplify the experience to the greatest extent possible.
@@ -38,7 +38,7 @@ Running the Checks Locally
 
 The easiest way to run the checks locally is to install the pre-commit software and use pre-commit to invoke the checks. The pre-commit software is written in python and can be installed with ``pip`` (the `installation instructions <https://pre-commit.com/#installation>`__ provides further details and alternative approaches).
 
-Once you have installed ``pre-commit``, you can enforce the checks by invoking the following command from the root of your pyKorg repository:
+Once you have installed ``pre-commit``, you can enforce the checks by invoking the following command from the root of your korg.py repository:
 
 .. code-block:: shell-session
 

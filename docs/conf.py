@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "pyKorg"
-copyright = "2025, pyKorg developers"
-author = "pyKorg developers"
+project = "korg.py"
+copyright = "2025, korg.py developers"
+author = "korg.py developers"
 release = "0.0.1"
 
 # -- General configuration ---------------------------------------------------

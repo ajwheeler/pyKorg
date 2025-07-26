@@ -1,9 +1,10 @@
 """
 This module defines the python interface to Korg
 """
+
 import os
 from collections.abc import Callable, Mapping
-from typing import TypeVar, ParamSpec
+from typing import Any, TypeVar, ParamSpec
 from ._julia_import import jl, Korg
 
 from juliacall import VectorValue as jlVectorValue
@@ -51,8 +52,8 @@ class LineList:
     """A lightweight class that wraps a line list.
 
     You shouldn't try to initialize this class directly. Instead, you should rely upon
-    functions like :py:func:`~pyKorg.get_APOGEE_DR17_linelist`,
-    :py:func:`~pyKorg.get_GES_linelist`, etc.
+    functions like :py:func:`~korg.get_APOGEE_DR17_linelist`,
+    :py:func:`~korg.get_GES_linelist`, etc.
     """
 
     _lines: jlVectorValue
@@ -95,19 +96,16 @@ def read_linelist(
     fname: os.PathLike,
     *,
     format: str | None = None,
-    isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None
+    isotopic_abundances: Mapping[int, Mapping[float, float]] | None = None,
 ) -> LineList:
-
     # coerce fname to a string
-    fname = os.fsdecode(fname)
+    coerced_fname = os.fsdecode(fname)
 
     # build up kwargs (we have to play some games here since we can't natively
     # represent the default values in python)
-    kwargs = {}
+    kwargs: dict[str, Any] = {}
     if format is not None:
         kwargs["format"] = format
     if isotopic_abundances is not None:
         kwargs["isotopic_abundances"] = isotopic_abundances
-    return LineList(Korg.read_linelist(fname, **kwargs))
-
-
+    return LineList(Korg.read_linelist(coerced_fname, **kwargs))

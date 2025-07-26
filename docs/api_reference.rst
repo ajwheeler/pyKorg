@@ -1,13 +1,13 @@
 API Reference
 =============
 
-This page provides a summary of all public functions exposed by pyKorg
+This page provides a summary of all public functions exposed by korg.py
 
 .. important::
 
    We need to update the docstring formatting so it is all rendered properly
 
-.. py:currentmodule:: pyKorg
+.. py:currentmodule:: korg
 
 "Getting" Line Lists
 --------------------
