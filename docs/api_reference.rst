@@ -12,7 +12,7 @@ This page provides a summary of all public functions exposed by korg.py
 "Getting" Line Lists
 --------------------
 
-.. autoclass:: LineList
+.. autoclass:: Linelist
 
 .. autofunction:: get_APOGEE_DR17_linelist
 

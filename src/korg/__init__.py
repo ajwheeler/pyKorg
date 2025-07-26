@@ -1,6 +1,6 @@
 import warnings
 from ._python_interface import (
-    LineList as LineList,
+    Linelist as Linelist,
     get_APOGEE_DR17_linelist,
     get_GALAH_DR3_linelist,
     get_GES_linelist,
