@@ -21,6 +21,7 @@ license-files = [
     "LICENSE"
 ]
 description = "fast 1D LTE stellar spectral synthesis"
+readme = "README.rst"
 authors = [
   {name = "Adam Wheeler", email = "adamwhlr@gmail.com"},
   {name = "Matthew W. Abruzzo", email = "matthewabruzzo@gmail.com" },
@@ -45,10 +46,6 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Astronomy",
     "Topic :: Scientific/Engineering :: Physics",
 ]
-
-[project.readme]
-file = "README.md"
-content-type = "text/markdown"
 
 [project.urls]
 Homepage = 'https://github.com/ajwheeler/pykorg'
